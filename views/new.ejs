@@ -1,0 +1,23 @@
+<% include partials/header %>
+<h1 class = 'text-center' style='margin: 30px;'>
+    Add a new Cat!
+</h1>
+<div class = 'container' style='width: 450px;'>
+    <form action="/cats" method="POST">
+        <div class ='form-group'>
+            <input class ='form-control' type="text" name="name" value="" placeholder="name">
+        </div>
+        <div class ='form-group'>
+            <input class='form-control'type="text" name="image" value="" placeholder="img URL">
+        </div>
+        <button class ='btn btn-default btn-lg'type="">Submit!</button>
+    </form>
+    
+</div>
+
+
+
+
+
+
+<% include partials/footer %>

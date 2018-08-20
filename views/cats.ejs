@@ -1,0 +1,29 @@
+<% include partials/header %>
+<section class = 'container'>
+    <header class = 'jumbotron'>
+        <h1 class = 'text-center'>This is the Cats Page</h1>
+        <p class = 'text-center'>It's what you came here for!</p>
+        <div class = 'container' style='width: 200px;'>
+            <a href="/cats/new" class= 'btn btn-primary container ml-2'>Add a new cat!</a>
+        </div>
+        
+    </header>
+
+  <div class='row' style = 'display: flex; flex-wrap: wrap;'>
+    <% cats.forEach(function(cat){ %>
+        <div class ='col-md-3 col-sm-6'>
+            <div class ='thumbnail'>
+                <h4 class = 'text-center'><%= cat.name %></h4>
+                <img src="<%= cat.image %>"></img>   
+            </div>
+        </div>   
+    <% }) %>  
+  </div>
+
+
+</section>
+
+<a href="/">Back to home</a>
+
+
+<% include partials/footer %>
