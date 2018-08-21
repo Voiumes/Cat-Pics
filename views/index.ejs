@@ -15,7 +15,12 @@
             <div class ='thumbnail'>
                 <h4 class = 'text-center'><%= cat.name %></h4>
                 <img src="<%= cat.image %>"></img>   
+                <div class = 'text-center' style="margin: 10px auto;">
+                    <a href="/cats/<%= cat._id %>" class = "btn btn-primary">More Info</a>
+                </div>
+                
             </div>
+           
         </div>   
     <% }) %>  
   </div>
