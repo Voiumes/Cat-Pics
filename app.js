@@ -1,20 +1,49 @@
 const express = require('express');
 const app = express();
 const bodyParser = require('body-parser');
+const mongoose = require('mongoose');
+mongoose.connect("mongodb://localhost/cat_app");
 app.use(bodyParser.urlencoded({extended: true}));
 app.set('view engine', 'ejs');
 
-let cats = [
-    {name:'Tommy Tabby', image:'https://bit.ly/2BcuomQ'},
-    {name:'Paws', image:'https://bit.ly/2w5rn1K'},
-    {name:'Whiskers', image:'https://bit.ly/2MR0k1a'}
-];
+let catSchema = new mongoose.Schema({
+    name: String,
+    image: String,
+    isCute: Boolean
+})
+
+let Cat = mongoose.model("Cat", catSchema);
+
+// Cat.create({
+//     name:'Tommy Tabby',
+//     image:'https://bit.ly/2BcuomQ'
+// }, function(err, cats){
+//     if(err){
+//         console.log('uh oh');
+//     }else{
+//         console.log('added tommy tabby');
+//     }
+// })
+
+
+// let cats = [
+//     {name:'Tommy Tabby', image:'https://bit.ly/2BcuomQ'},
+//     {name:'Paws', image:'https://bit.ly/2w5rn1K'},
+//     {name:'Whiskers', image:'https://bit.ly/2MR0k1a'}
+// ];
 
 app.get('/', function(req, res){
     res.render('landing');
 })
 app.get('/cats', function(req, res){
-    res.render('cats', {cats:cats});
+    Cat.find({},function(err, cat){
+        if(err){
+            console.log('render error line 49')
+        }else{
+            res.render('cats', {cats:cat});
+        }
+    })
+    
 });
 app.post('/cats', function(req, res){
     let name = req.body.name;
