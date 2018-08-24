@@ -2,39 +2,16 @@ const express = require('express');
 const app = express();
 const bodyParser = require('body-parser');
 const mongoose = require('mongoose');
-mongoose.connect("mongodb://localhost/cat_app");
+const Cat = require('./models/cats');
+const Comment = require ('./models/comments.js')
+const seedDb = require('./seeds');
+
+mongoose.connect("mongodb://localhost/catcamp");
 app.use(bodyParser.urlencoded({extended: true}));
 app.set('view engine', 'ejs');
 
-let catSchema = new mongoose.Schema({
-    name: String,
-    image: String,
-    isCute: Boolean,
-    desc: String
-})
 
-let Cat = mongoose.model("Cat", catSchema);
-
-// Cat.create({
-//     name:'Voiumes',
-//     image:'https://images.unsplash.com/photo-1489084917528-a57e68a79a1e?ixlib=rb-0.3.5&ixid=eyJhcHBfaWQiOjEyMDd9&s=43cb78de7049ab49aaa8b6ce363b8986&auto=format&fit=crop&w=500&q=60',
-//     isCute: true,
-//     desc: "Enable MongoDBs free cloud-based monitoring service to collect and displa metrics about your deployment (disk utilization, CPU, operation statistics,etc)."
-// }, function(err, cats){
-//     if(err){
-//         console.log('uh oh');
-//     }else{
-//         console.log('added voiumes');
-//     }
-// })
-
-
-// let cats = [
-//     {name:'Tommy Tabby', image:'https://bit.ly/2BcuomQ'},
-//     {name:'Paws', image:'https://bit.ly/2w5rn1K'},
-//     {name:'Whiskers', image:'https://bit.ly/2MR0k1a'}
-// ];
-
+// seedDb();
 app.get('/', function(req, res){
     res.render('landing');
 })
@@ -67,7 +44,7 @@ app.get('/cats/new', function(req, res){
     res.render('new')
 })
 app.get('/cats/:id', function(req, res){
-    Cat.findById(req.params.id , function(err, showcat){
+    Cat.findById(req.params.id).populate('comments').exec(function(err, showcat){
         if(err){
             console.log('error line 70')
         }else{

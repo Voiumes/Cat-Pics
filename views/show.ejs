@@ -4,6 +4,10 @@
     <img src="<%= cat.image %>">
     <p><%= cat.desc %></p>
     <p>Cute:<%= cat.isCute %></p>
+    
+    <% cat.comments.forEach(function(comment){ %>
+        <p> <%= comment.author %> - <%= comment.title %></p>
+    <% }) %>
 </div>
 
 <% include partials/footer %>
