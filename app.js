@@ -11,6 +11,7 @@ app.use(bodyParser.urlencoded({extended: true}));
 app.set('view engine', 'ejs');
 
 
+
 // seedDb();
 app.get('/', function(req, res){
     res.render('landing');
@@ -20,7 +21,7 @@ app.get('/cats', function(req, res){
         if(err){
             console.log('render error line 49')
         }else{
-            res.render('index', {cats:gallerycat});
+            res.render('cats/index', {cats:gallerycat});
         }
     })
     
@@ -41,17 +42,55 @@ app.post('/cats', function(req, res){
    
 });
 app.get('/cats/new', function(req, res){
-    res.render('new')
+    res.render('cats/new')
 })
 app.get('/cats/:id', function(req, res){
     Cat.findById(req.params.id).populate('comments').exec(function(err, showcat){
         if(err){
             console.log('error line 70')
         }else{
-            res.render('show', {cat: showcat})
+            res.render('cats/show', {cat: showcat})
         }
     })
 });
+
+//=============COMMENTS======================//
+
+app.get('/cats/:id/comments/new', function(req, res){
+    Cat.findById(req.params.id, function(err, cat){
+        if (err){
+
+        }else{
+            res.render('comments/new', {cat: cat});
+        }
+        
+    })
+    
+})
+app.post('/cats/:id/comments', function(req, res){
+    Cat.findById(req.params.id, function(err, cat){
+        if(err){
+            
+        }else{
+            Comment.create(req.body.comment, function(err, comment){
+                if(err){}
+                else{
+                    cat.comments.push(comment)
+                    cat.save()
+                     res.redirect('/cats/' + cat._id);
+                }
+            })
+        }
+    })
+})
+
+
+
+
+
+
+
+
 
 app.listen(4000 , function(){
     console.log('app is live')
